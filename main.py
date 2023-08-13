@@ -4,18 +4,32 @@ author: Jan Slechta
 email: janslechta31@gmail.com
 discord: honzas0100
 """
+import os
 import random
 
 separator = 90*"-"
 
-def without_duplicates(num):     
-    return len(str(num)) == len(set(str(num)))
+
+def valid_input(num):
+    message = ""
+    if str(num).isdigit() == False:
+        message = "Input has to be only digits!!!"
+        return False, message
+    elif str(num)[0] == "0":
+        message = "First digit can't be zero!!!"
+        return False, message
+    elif len(str(num)) != 4:
+        message = "digits has to contain from 4 digits!!!"
+        return False, message
+    elif len(str(num)) != len(set(str(num))):
+        message = "Use digits without duplicitas!!!"
+        return False, message
+    return True, message
 
 def generate_random_number():
-    number = random.randint(1000,9999)
-    while without_duplicates(number) is False:
-        number = random.randint(1000,9999)
-    number = str(number)
+    number = str(random.randint(1000,9999))
+    while valid_input(number) is False:
+        number = str(random.randint(1000,9999))
     number_list = []
     for digit in number:
         number_list.append(digit)
@@ -24,8 +38,13 @@ def generate_random_number():
 
 def get_guess():
     number = input("Enter a number: ")
+    check_result, message = valid_input(number)
+    while  check_result is False:
+        print(message)
+        number = input("Wrong input. Enter a number: ")
+        check_result, message = valid_input(number)
     guess = []
-    for digit in number:
+    for digit in str(number):
         guess.append(digit)
     print(guess)
     return guess
@@ -35,19 +54,27 @@ def guess_result(guess, guessed_number):
     cows = 0
     for i in range(len(guessed_number)):
         if guess[i] == guessed_number[i]:
-            cows += 1
+            bulls += 1
         if guess[i] in guessed_number:
-            bulls += 1           
-    bulls = bulls - cows
+            cows += 1           
+    cows = cows - bulls
     return bulls, cows
          
+def main():
+    game_is_on = True
+    os.system("clear")
+    print("Hi there!\n",separator,"\nI've generated a random 4 digit number for you. Let's play a bulls and cows game.\n",separator)
+    guessed_number = generate_random_number()
 
+    while game_is_on:
+        guess = get_guess()
+        bulls,cows = guess_result(guess,guessed_number)
+        if bulls == 4:
+            game_is_on = False
+        print(bulls, "bulls", cows, "cows")
+        print(separator)
+    else:
+        print("Congratulation, you guessed the right number")
 
-print("Hi there!\n",separator,"\nI've generated a random 4 digit number for you. Let's play a bulls and cows game.\n",separator)
-guessed_number = generate_random_number()
-guess = get_guess()
-bulls,cows = guess_result(guess,guessed_number)
-print(bulls, cows)
-
-
-
+if __name__ == "__main__":
+    main()
