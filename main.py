@@ -42,7 +42,6 @@ def number_to_list(number):
     guess = []
     for digit in str(number):
         guess.append(digit)
-    print(guess)
     return guess
 
 
@@ -113,6 +112,7 @@ def guess_result(guess, guessed_number):
 """         
 def main():
     game_is_on = True
+    guessing_counter = 0
     os.system("clear")
     print("Hi there!\n",separator,"\nI've generated a random 4 digit number for you. Let's play a bulls and cows game.\n",separator)
     guessed_number = generate_random_number()
@@ -122,11 +122,14 @@ def main():
         bulls,cows = guess_result(guess,guessed_number)
         if bulls == 4:
             game_is_on = False
+        guessing_counter += 1
         print(bulls, "bulls", cows, "cows")
         print(separator)
     else:
-        print("Congratulation, you guessed the right number")
-
+        if guessing_counter is 1:
+            print("Congratulation, you guessed the right number and it took you ",guessing_counter, " attempt.")
+        else:
+            print("Congratulation, you guessed the right number and it took you ",guessing_counter, " attempts.")
 
 if __name__ == "__main__":
     main()
