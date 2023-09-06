@@ -9,33 +9,49 @@ import random
 
 separator = 90*"-"
 
+"""
+This function checks the validity of the input number
+    Args:
+        num (str): The input number to be validated
 
+    Returns:
+        True/False and if the number is invalid, return error message
+"""
 def valid_input(num):
-    message = ""
     if str(num).isdigit() == False:
-        message = "Input has to be only digits!!!"
-        return False, message
+        return False,"Input has to be only digits!!!"
     elif str(num)[0] == "0":
-        message = "First digit can't be zero!!!"
-        return False, message
+        return False, "First digit can't be zero!!!"
     elif len(str(num)) != 4:
-        message = "digits has to contain from 4 digits!!!"
-        return False, message
+        return False, "digits has to contain from 4 digits!!!"
     elif len(str(num)) != len(set(str(num))):
-        message = "Use digits without duplicitas!!!"
-        return False, message
-    return True, message
+        return False, "Use digits without duplicitas!!!"
+    return True, ""
 
+"""
+This function generate random number in range from 1000 to 9999. Number is checked for valid format.
+    
+    Returns:
+        number_list : list of digits from generated number
+"""
 def generate_random_number():
     number = str(random.randint(1000,9999))
-    while valid_input(number) is False:
+    check_result, _ = valid_input(number)
+    while check_result is False:
         number = str(random.randint(1000,9999))
+        check_result, _ = valid_input(number)
     number_list = []
     for digit in number:
         number_list.append(digit)
     print (number_list)
     return number_list
 
+"""
+This function get guess from user. Input is checked for valid format
+
+    Returns:
+        guess : list of digits from input
+"""
 def get_guess():
     number = input("Enter a number: ")
     check_result, message = valid_input(number)
@@ -49,6 +65,16 @@ def get_guess():
     print(guess)
     return guess
 
+"""
+This function evaluate user's input against guessed number and returns number of cows (correct numbers, wrong position) 
+and bulls (corect digits, correct position)
+    Args:
+        guess (list): list of digits
+        guessed_number (list) : list of digits
+
+    Returns:
+        bulls, cows (int) : number  
+"""
 def guess_result(guess, guessed_number):
     bulls = 0
     cows = 0
@@ -59,7 +85,18 @@ def guess_result(guess, guessed_number):
             cows += 1           
     cows = cows - bulls
     return bulls, cows
-         
+
+"""
+    This is the main function of the program.
+
+    It initializes the game, interacts with the user, and manages the game loop.
+    The game is a Bulls and Cows guessing game, where the player tries to guess
+    a 4-digit number with unique digits.
+
+    Usage:
+    - Run this function to start the game.
+
+"""         
 def main():
     game_is_on = True
     os.system("clear")
