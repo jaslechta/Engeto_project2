@@ -9,6 +9,7 @@ import random
 
 separator = 90*"-"
 
+
 """
 This function checks the validity of the input number
     Args:
@@ -29,6 +30,23 @@ def valid_input(num):
     return True, ""
 
 """
+This function create from number(string) list of digits
+ 
+   Args:
+        number (str): string of digits
+
+    Returns:
+        guess : list of digits
+"""
+def number_to_list(number):
+    guess = []
+    for digit in str(number):
+        guess.append(digit)
+    print(guess)
+    return guess
+
+
+"""
 This function generate random number in range from 1000 to 9999. Number is checked for valid format.
     
     Returns:
@@ -40,11 +58,9 @@ def generate_random_number():
     while check_result is False:
         number = str(random.randint(1000,9999))
         check_result, _ = valid_input(number)
-    number_list = []
-    for digit in number:
-        number_list.append(digit)
-    print (number_list)
+    number_list = number_to_list(number)
     return number_list
+
 
 """
 This function get guess from user. Input is checked for valid format
@@ -59,10 +75,7 @@ def get_guess():
         print(message)
         number = input("Wrong input. Enter a number: ")
         check_result, message = valid_input(number)
-    guess = []
-    for digit in str(number):
-        guess.append(digit)
-    print(guess)
+    guess = number_to_list(number)
     return guess
 
 """
@@ -85,6 +98,7 @@ def guess_result(guess, guessed_number):
             cows += 1           
     cows = cows - bulls
     return bulls, cows
+
 
 """
     This is the main function of the program.
@@ -112,6 +126,7 @@ def main():
         print(separator)
     else:
         print("Congratulation, you guessed the right number")
+
 
 if __name__ == "__main__":
     main()
